@@ -46,11 +46,15 @@ public class Heap {
 
 	public void deleteRoot() {
 		l.set(1, l.get(len));
+		l.remove(len);
 		len--;
 		int i = 1;
 		while(i<len) {
-			int max = getMaxChildIndex(i);
-			if(l.get(i)>max) {
+			Integer max = getMaxChildIndex(i);
+			if(max==null) {
+				break;
+			}
+			if(l.get(i)<l.get(max)) {
 				swap(i, max);
 				i = max;
 			} else {
@@ -60,12 +64,12 @@ public class Heap {
 	}
 	
 	private Integer getMaxChildIndex(int i) {
-		if(l.get(getLeftChildIndex(i)) == null && l.get(getRightChildIndex(i))==null) {
+		if(getLeftChildIndex(i) > len && getRightChildIndex(i)>len) {
 			return null;
-		} else if(l.get(getLeftChildIndex(i)) == null) {
+		} else if(getLeftChildIndex(i) > len) {
 			return getRightChildIndex(i);
-		} else if (l.get(getRightChildIndex(i))==null) {
-			return l.get(getLeftChildIndex(i));
+		} else if (getRightChildIndex(i)>len) {
+			return getLeftChildIndex(i);
 		} else {
 			return l.get(getLeftChildIndex(i)) >= l.get(getRightChildIndex(i)) ? getLeftChildIndex(i) : getRightChildIndex(i);
 		}
